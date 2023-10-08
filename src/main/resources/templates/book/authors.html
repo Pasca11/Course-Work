@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторы</title>
+</head>
+<body>
+<p>Текущие авторы:</p>
+<div th:each="author : ${bookAuthors}">
+    <p th:text="${author.getFirstName() + ' ' + author.getSecondName()}"></p>
+    <form th:method="DELETE" th:action="@{/books/{id}/authors(id=${book.getId()})}">
+        <input type="hidden" th:value="${author.getId()}" name="id">
+<!--        <input type="hidden" th:value="${author.getFirstName()}" name="firstName">-->
+<!--        <input type="hidden" th:value="${author.getSecondName()}" name="secondName">-->
+<!--        <input type="hidden" th:value="${author.getBirthday()}" name="birthDay">-->
+        <input type="submit" value="Удалить">
+    </form>
+</div>
+<hr>
+<p>Все авторы</p>
+<div th:each="author : ${allAuthors}">
+    <p th:text="${author.getFirstName() + ' ' + author.getSecondName()}"></p>
+    <form th:method="PATCH" th:action="@{/books/{id}/authors(id=${book.getId()})}">
+        <input type="hidden" th:value="${author.getId()}" name="id">
+        <!--        <input type="hidden" th:value="${author.getFirstName()}" name="firstName">-->
+        <!--        <input type="hidden" th:value="${author.getSecondName()}" name="secondName">-->
+        <!--        <input type="hidden" th:value="${author.getBirthday()}" name="birthDay">-->
+        <input type="submit" value="Добавить">
+    </form>
+</div>
+</body>
+</html>

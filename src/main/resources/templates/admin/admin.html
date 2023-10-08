@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin page</title>
+</head>
+<body>
+<form method="get" action="/admin">
+  <label for="input">Введите имя человека для поиска</label>
+  <input type="text" name="pattern" id="input">
+  <input type="submit" value="Поиск">
+</form>
+<div th:if="${hasPattern}">
+  <div th:if="${people.isEmpty()}">
+    <span>Пользователи не найдены</span>
+  </div>
+  <div th:unless="${people.isEmpty()}">
+    <table th:each="person : ${people}">
+      <tr>
+        <td>
+          <a th:href="@{/customer/{id}(id = ${person.getId()})}" th:text="${person.getFirstName() +
+          ' ' + person.getSecondName() + ', ' + person.getUsername()}"></a>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+</body>
+</html>

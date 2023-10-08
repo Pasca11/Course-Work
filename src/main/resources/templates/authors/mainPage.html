@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторы</title>
+</head>
+<body>
+<div th:each="i : ${allAuthors}">
+    <p th:text="${i.getId()} + '. ' + ${i.getFirstName()} + ', ' + ${i.getSecondName()} + ' ' + ${#dates.format(i.getBirthday(), 'dd-MM-yyyy')}"></p>
+    <form th:action="@{/authors/{id}/edit(id=${i.getId()})}">
+        <input type="hidden" name="id" th:value="${i.getId()}">
+        <input type="submit" value="Редактировать">
+    </form>
+</div>
+</body>
+</html>

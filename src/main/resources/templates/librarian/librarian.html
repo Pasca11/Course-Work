@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Librarian</title>
+</head>
+<body>
+<p th:text="${person.getUsername()}"></p>
+<br>
+<hr>
+<p>Еще не выданные книги:</p>
+<div th:if="${bookingsToIssue}">
+    <div th:each="i : ${bookingsToIssue}">
+        <form th:method="POST" th:action="@{/librarian/{id}/issueBook(id=${person.getId()})}" th:object="${someBooking}">
+            <input type="hidden" th:name="id" th:value="${i.getId()}">
+            <p th:text="${i.getId()} + ' ' + ${i.getBook().getTitle()} + ', ' + ${i.getBook().getAuthorsInString()} +
+ ' | ' + ${i.getPerson().getFirstName()} + ' ' + ${i.getPerson().getSecondName()}" style="display: inline"></p>
+            <input type="submit" value="Выдать книгу">
+        </form>
+    </div>
+</div>
+<hr>
+<p>Выданные книги</p>
+<div th:if="${bookingsToClose}">
+    <div th:each="i : ${bookingsToClose}">
+        <form th:method="POST" th:action="@{/librarian/{id}/closeBooking(id=${person.getId()})}" th:object="${someBooking}">
+            <input type="hidden" th:name="id" th:value="${i.getId()}">
+            <p th:text="${i.getId()} + ' ' + ${i.getBook().getTitle()} + ', ' + ${i.getBook().getAuthorsInString()} +
+' | ' + ${i.getPerson().getFirstName()} + ' ' + ${i.getPerson().getSecondName()}" style="display: inline"></p>
+            <input type="submit" value="Закрыть заявку">
+        </form>
+    </div>
+</div>
+<hr>
+</body>
+</html>

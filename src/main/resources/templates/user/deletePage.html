@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Удаление пользователя</title>
+</head>
+<body>
+<p th:text="'Вы уверены, что хотите удалить пользователя ' + ${person.getFirstName() + ' ' + person.getSecondName() +
+' (' + person.getUsername() + ')?'}"></p>
+<form th:method="DELETE" th:action="@{/customer/{id}(id=${person.getId()})}">
+    <input type="submit" value="Да">
+<!--    <div th:if="${delError}">-->
+        <p th:text="${delError}"></p>
+<!--    </div>-->
+</form>
+<form th:action="@{/customer/{id}(id=${person.getId()})}">
+    <input type="submit" value="Нет">
+</form>
+</body>
+</html>

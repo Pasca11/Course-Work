@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Книги</title>
+</head>
+<body>
+<form action="/books">
+    <input type="text" name="pattern">
+    <input type="submit" value="Поиск">
+</form>
+<table th:each="book: ${books}">
+    <tr>
+        <td>
+            <a th:href="@{/books/{id}(id = ${book.getId()})}" th:text="${book.getTitle() +
+          ' ' + book.getAuthorsInString()}"></a>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

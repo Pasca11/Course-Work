@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Книга</title>
+</head>
+<body>
+<p th:text="${book.getTitle() + ' ' + book.getAuthorsInString()}"></p>
+<form th:action="@{/books/{id}/authors(id=${book.getId()})}">
+    <input type="submit" value="Редактировать список авторов">
+</form>
+</body>
+</html>

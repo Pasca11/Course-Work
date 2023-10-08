@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:method="GET" action="/customer">
+    <input type="submit" value="Личный кабинет">
+</form>
+<div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')">
+    <form th:method="GET" action="/librarian">
+        <input type="submit" value="Меню заявок">
+    </form>
+</div>
+<div sec:authorize="hasRole('ROLE_ADMIN')">
+    <form th:method="GET" action="/admin">
+        <input type="submit" value="Меню поиска пользователей">
+    </form>
+</div>
+</body>
+</html>
