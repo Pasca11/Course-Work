@@ -1,6 +1,7 @@
 package ru.amir.library.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -15,10 +16,14 @@ public class Author {
     private int id;
 
     @Column(name = "first_name")
+    @NotEmpty(message = "Автор должен иметь имя")
     private String firstName;
 
     @Column(name = "second_name")
     private String secondName;
+
+    @Column(name = "patronymic")
+    private String patronymic;
 
     @Column(name = "birthday")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -72,5 +77,13 @@ public class Author {
 
     public void setBooks(List<Book> books) {
         this.books = books;
+    }
+
+    public String getPatronymic() {
+        return patronymic;
+    }
+
+    public void setPatronymic(String patronymic) {
+        this.patronymic = patronymic;
     }
 }

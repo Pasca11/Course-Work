@@ -4,25 +4,23 @@ import org.hibernate.Hibernate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.amir.library.models.Book;
 import ru.amir.library.models.Booking;
 import ru.amir.library.models.Person;
 import ru.amir.library.repositories.PeopleRepository;
+import ru.amir.library.repositories.StatusRepository;
 import ru.amir.library.utils.Role;
-import ru.amir.library.utils.Status;
 
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class PeopleService {
     private final PeopleRepository peopleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public PeopleService(PeopleRepository peopleRepository, PasswordEncoder passwordEncoder) {
+    public PeopleService(PeopleRepository peopleRepository, PasswordEncoder passwordEncoder, StatusRepository statusRepository) {
         this.peopleRepository = peopleRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -80,7 +78,7 @@ public class PeopleService {
                         }
                     }
                 });
-            return person.get().getBookings().stream().filter(o -> o.getStatus() != Status.CLOSED).toList();
+            return person.get().getBookings().stream().filter(o -> o.getStatus().getId() != 3).toList();
         } else {
             return Collections.emptyList();
         }

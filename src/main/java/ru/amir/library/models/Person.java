@@ -20,12 +20,14 @@ public class Person {
     private String username;
 
     @Column(name = "first_name")
+    @NotEmpty
     private String firstName;
 
     @Column(name = "second_name")
     private String secondName;
 
     @Column(name = "password")
+    @NotEmpty
     private String password;
 
     @Column(name = "phone_number")

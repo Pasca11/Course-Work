@@ -37,6 +37,11 @@ public class AuthorsController {
         return "authors/edit";
     }
 
+    @GetMapping("/new")
+    public String newPage(@ModelAttribute Author author) {
+        return "authors/new";
+    }
+
     @PatchMapping("/{id}")
     public String edition(@PathVariable int id,
                           @ModelAttribute @Valid Author author,
@@ -45,6 +50,16 @@ public class AuthorsController {
             return "/authors/edit";
         }
         authorsService.update(id, author);
+        return "redirect:/authors";
+    }
+
+    @PostMapping
+    public String save(@ModelAttribute Author author,
+                       BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "authors/new";
+        }
+        authorsService.save(author);
         return "redirect:/authors";
     }
 }

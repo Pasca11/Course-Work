@@ -40,4 +40,9 @@ public class AuthorsService {
         author.setId(id);
         authorsRepository.save(author);
     }
+
+    @Transactional
+    public void save(Author author) {
+        authorsRepository.save(author);
+    }
 }

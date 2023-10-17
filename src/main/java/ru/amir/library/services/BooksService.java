@@ -64,7 +64,7 @@ public class BooksService {
         List<Booking> bookings = bookingsRepository.findAllAssignedToPerson(id);
         return booksRepository.findAll().stream().filter(
                 o -> !bookings.stream().map(Booking::getBook).toList().contains(o)
-                && o.getAmount() != 0
+                && o.getAmount() > 0
         ).toList();
     }
 
@@ -87,6 +87,11 @@ public class BooksService {
         Book book = booksRepository.findById(id).get();
         author1.getBooks().add(book);
         book.getAuthors().add(author1);
+    }
+
+    @Transactional
+    public void decreaseAmountById(int id) {
+        booksRepository.findById(id).get().decreaseAmount();
     }
 }
 

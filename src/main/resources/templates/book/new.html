@@ -8,17 +8,22 @@
 <form th:method="POST" th:action="@{/books}" th:object="${book}">
     <label for="tt">Название</label>
     <input type="text" th:field="*{title}" id="tt">
+    <div style="color: red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">error</div>
     <br>
     <label for="fn">Дата выпуска</label>
     <input type="date" th:field="*{releaseDate}" id="fn">
+    <div style="color: red" th:if="${#fields.hasErrors('releaseDate')}" th:errors="*{releaseDate}">error</div>
     <br>
     <label for="am">Количество</label>
     <input type="number" th:field="*{amount}" id="am">
-    <input type="submit" value="Добавить">
-    <div style="color: red" th:if="${#fields.hasErrors('releaseDate')}" th:errors="*{releaseDate}">error</div>
-    <div style="color: red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">error</div>
     <div style="color: red" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">error</div>
 
+    <label for="rolePicker">Выберите роль</label>
+    <select th:field="*{genre}" id="rolePicker">
+        <option th:each="genre : ${genres}" th:value="${genre.getId()}" th:text="${genre.getName()}"></option>
+    </select>
+
+    <input type="submit" value="Добавить">
 </form>
 </body>
 </html>

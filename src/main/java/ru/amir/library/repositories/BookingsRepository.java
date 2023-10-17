@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface BookingsRepository extends JpaRepository<Booking, Integer> {
-    @Query(value = "SELECT b from Booking b where b.person.id = :person_id and b.status <> 'CLOSED'")
+    @Query(value = "SELECT b from Booking b where b.person.id = :person_id and b.status.id <> 3")
     List<Booking> findAllAssignedToPerson(@Param("person_id") Integer id);
 }

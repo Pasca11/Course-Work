@@ -6,7 +6,8 @@
 </head>
 <body>
 <div th:each="i : ${allAuthors}">
-    <p th:text="${i.getId()} + '. ' + ${i.getFirstName()} + ', ' + ${i.getSecondName()} + ' ' + ${#dates.format(i.getBirthday(), 'dd-MM-yyyy')}"></p>
+    <p th:text="${i.getSecondName()} + ', ' + ${i.getFirstName()} + ' ' + ${i.getPatronymic()} +
+     ' ' + ${#dates.format(i.getBirthday(), 'dd-MM-yyyy')}"></p>
     <form th:action="@{/authors/{id}/edit(id=${i.getId()})}">
         <input type="hidden" name="id" th:value="${i.getId()}">
         <input type="submit" value="Редактировать">

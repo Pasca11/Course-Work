@@ -1,7 +1,6 @@
 package ru.amir.library.models;
 
 import jakarta.persistence.*;
-import ru.amir.library.utils.Status;
 
 import java.util.Date;
 
@@ -23,8 +22,8 @@ public class Booking {
     @Column(name = "booking_date")
     private Date bookinDate;
 
-    @Column(name = "status")
-    @Enumerated(EnumType.STRING)
+    @ManyToOne
+    @JoinColumn(name = "status", referencedColumnName = "id")
     private Status status;
 
     @Column(name = "issue_date")
@@ -76,19 +75,19 @@ public class Booking {
         isOverdue = overdue;
     }
 
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
     public Date getIssueDate() {
         return issueDate;
     }
 
     public void setIssueDate(Date issueDate) {
         this.issueDate = issueDate;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

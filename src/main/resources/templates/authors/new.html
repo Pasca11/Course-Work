@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Новый автор</title>
+</head>
+<body>
+<form th:method="POST" th:action="@{/authors}" th:object="${author}">
+  <label for="tt">*Имя</label>
+  <input type="text" th:field="*{firstName}" id="tt">
+  <div style="color: red" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">error</div>
+  <br>
+  <label for="fn">Фамилия</label>
+  <input type="text" th:field="*{secondName}" id="fn">
+  <div style="color: red" th:if="${#fields.hasErrors('secondName')}" th:errors="*{secondName}">error</div>
+  <br>
+  <label for="am">Отчество</label>
+  <input type="text" th:field="*{patronymic}" id="am">
+  <div style="color: red" th:if="${#fields.hasErrors('patronymic')}" th:errors="*{patronymic}">error</div>
+  <br>
+  <label for="bd">Дата рождения</label>
+  <input type="date" th:field="*{birthday}" id="bd">
+  <div style="color: red" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}">error</div>
+  <br>
+  <input type="submit" value="Добавить">
+</form>
+</body>
+</html>

@@ -1,12 +1,14 @@
 package ru.amir.library.services;
 
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.amir.library.models.Book;
 import ru.amir.library.models.Booking;
 import ru.amir.library.models.Person;
 import ru.amir.library.repositories.BookingsRepository;
-import ru.amir.library.utils.Status;
+import ru.amir.library.repositories.StatusRepository;
+import ru.amir.library.utils.NotEnoughBooksException;
 
 import java.util.Date;
 import java.util.List;
@@ -15,22 +17,26 @@ import java.util.stream.Collectors;
 @Service
 public class BookingService {
     private final BookingsRepository bookingsRepository;
+    private final StatusRepository statusRepository;
+    private final BooksService booksService;
 
-    public BookingService(BookingsRepository bookingsRepository) {
+    public BookingService(BookingsRepository bookingsRepository, StatusRepository statusRepository, BooksService booksService) {
         this.bookingsRepository = bookingsRepository;
+        this.statusRepository = statusRepository;
+        this.booksService = booksService;
     }
 
     @Transactional(readOnly = true)
     public List<Booking> getAllNotIssued() {
         return bookingsRepository.findAll().stream().filter(
-                o -> o.getStatus() == Status.OPEN
+                o -> o.getStatus().getId() == 1
         ).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public List<Booking> getAllNotClosed() {
         return bookingsRepository.findAll().stream().filter(
-                o -> o.getStatus() != Status.CLOSED
+                o -> o.getStatus().getId() != 3
         ).collect(Collectors.toList());
     }
 
@@ -38,25 +44,29 @@ public class BookingService {
     public void issue(int id) {
         Booking booking = bookingsRepository.findById(id).get();
         booking.setIssueDate(new Date());
-        bookingsRepository.findById(id).get().setStatus(Status.ISSUED);
+        bookingsRepository.findById(id).get().setStatus(statusRepository.findById(2).get());
     }
 
     @Transactional
     public void close(int id) {
-        bookingsRepository.findById(id).get().setStatus(Status.CLOSED);
+        Booking booking = bookingsRepository.findById(id).get();
+        booking.setStatus(statusRepository.findById(3).get());
+        booking.getBook().increaseAmount();
+
     }
 
     @Transactional
-    public void assign(Person person, Book book) {
+    public void assign(Person person, Book book) throws NotEnoughBooksException {
         Booking booking = new Booking();
         booking.setBook(book);
         booking.setPerson(person);
         booking.setBookinDate(new Date());
-        booking.setStatus(Status.OPEN);
+        booking.setStatus(statusRepository.findById(1).get());
 
-        book.decreaseAmount();
+        booksService.decreaseAmountById(book.getId());
 
-        bookingsRepository.save(booking);
+        booking.getBook().decreaseAmount();
+
     }
 
 }

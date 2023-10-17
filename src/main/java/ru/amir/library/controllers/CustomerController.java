@@ -14,6 +14,7 @@ import ru.amir.library.security.PersonDetails;
 import ru.amir.library.services.BookingService;
 import ru.amir.library.services.BooksService;
 import ru.amir.library.services.PeopleService;
+import ru.amir.library.utils.NotEnoughBooksException;
 import ru.amir.library.utils.Role;
 
 import java.util.Arrays;

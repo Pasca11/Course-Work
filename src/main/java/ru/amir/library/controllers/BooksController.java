@@ -38,14 +38,16 @@ public class BooksController {
     }
 
     @GetMapping("/new")
-    public String newBook(@ModelAttribute("book") Book book) {
-
+    public String newBook(@ModelAttribute("book") Book book,
+                          Model model) {
+        model.addAttribute("genres", genresService.findAll());
         return "book/new";
     }
 
     @PostMapping
     public String addBook(@ModelAttribute("book") @Valid Book book,
                           BindingResult bindingResult) {
+        System.out.println(book.getGenre().getName());
         if (bindingResult.hasErrors()) {
             return "book/new";
         }
