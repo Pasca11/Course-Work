@@ -110,6 +110,7 @@ public class CustomerController {
     @PostMapping("/{id}/assign")
     public String assign(@ModelAttribute("freeBook") Book book,
                          @PathVariable("id") Person person) {
+        System.out.println("ASSIGN " + book.getId() + " " + person.getId());
         bookingService.assign(person, book);
         return "redirect:/customer/" + person.getId();
     }

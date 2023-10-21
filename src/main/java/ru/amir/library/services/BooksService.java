@@ -93,5 +93,10 @@ public class BooksService {
     public void decreaseAmountById(int id) {
         booksRepository.findById(id).get().decreaseAmount();
     }
+
+    @Transactional
+    public void increaseAmountById(int id) {
+        booksRepository.findById(id).get().increaseAmount();
+    }
 }
 

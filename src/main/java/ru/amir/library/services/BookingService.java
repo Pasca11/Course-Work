@@ -51,7 +51,10 @@ public class BookingService {
     public void close(int id) {
         Booking booking = bookingsRepository.findById(id).get();
         booking.setStatus(statusRepository.findById(3).get());
+
         booking.getBook().increaseAmount();
+
+        bookingsRepository.save(booking);
 
     }
 
@@ -65,8 +68,7 @@ public class BookingService {
 
         booksService.decreaseAmountById(book.getId());
 
-        booking.getBook().decreaseAmount();
-
+        bookingsRepository.save(booking);
     }
 
 }

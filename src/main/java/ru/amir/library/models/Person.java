@@ -38,7 +38,7 @@ public class Person {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "person")
+    @OneToMany(mappedBy = "person", cascade = CascadeType.REMOVE)
     private List<Booking> bookings;
 
     public Person() {
