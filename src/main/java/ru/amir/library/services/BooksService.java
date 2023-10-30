@@ -2,10 +2,7 @@ package ru.amir.library.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.amir.library.models.Author;
-import ru.amir.library.models.Book;
-import ru.amir.library.models.Booking;
-import ru.amir.library.models.Person;
+import ru.amir.library.models.*;
 import ru.amir.library.repositories.AuthorsRepository;
 import ru.amir.library.repositories.BookingsRepository;
 import ru.amir.library.repositories.BooksRepository;
@@ -19,11 +16,14 @@ public class BooksService {
     private final BooksRepository booksRepository;
     private final BookingsRepository bookingsRepository;
     private final AuthorsRepository authorsRepository;
+    private final GenresService genresService;
 
-    public BooksService(BooksRepository booksRepository, BookingsRepository bookingsRepository, AuthorsRepository authorsRepository) {
+
+    public BooksService(BooksRepository booksRepository, BookingsRepository bookingsRepository, AuthorsRepository authorsRepository, GenresService genresService) {
         this.booksRepository = booksRepository;
         this.bookingsRepository = bookingsRepository;
         this.authorsRepository = authorsRepository;
+        this.genresService = genresService;
     }
 
     @Transactional(readOnly = true)
@@ -43,8 +43,10 @@ public class BooksService {
 
     @Transactional
     public void update(int id, Book book) {
-        book.setId(id);
-        booksRepository.save(book);
+        Book book1 = booksRepository.findById(id).get();
+        book1.setTitle(book.getTitle());
+        book1.setAmount(book.getAmount());
+        book1.setReleaseDate(book.getReleaseDate());
     }
 
     @Transactional(readOnly = true)
@@ -97,6 +99,12 @@ public class BooksService {
     @Transactional
     public void increaseAmountById(int id) {
         booksRepository.findById(id).get().increaseAmount();
+    }
+
+    @Transactional
+    public void changeGenre(int id, Book book) {
+        Book book1 = booksRepository.findById(id).get();
+        book1.setGenre(book.getGenre());
     }
 }
 

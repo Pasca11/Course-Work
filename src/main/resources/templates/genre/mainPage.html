@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Жанры</title>
+</head>
+<body>
+<table th:each="genre: ${genres}">
+  <tr>
+    <td>
+      <a th:href="@{/genres/{id}(id = ${genre.getId()})}" th:text="${genre.getName()}"></a>
+    </td>
+  </tr>
+</table>
+<form action="/genres/new">
+    <input type="submit" value="Добавить новый жанр">
+</form>
+</body>
+</html>

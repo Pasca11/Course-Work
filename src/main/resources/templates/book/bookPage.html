@@ -5,7 +5,22 @@
     <title>Книга</title>
 </head>
 <body>
-<p th:text="${book.getTitle() + ' ' + book.getAuthorsInString()}"></p>
+<p th:text="${book.getTitle() + ' ' + book.getAuthorsInString() + '. ' + book.getGenre().getName()}">
+
+</p>
+
+<form th:action="@{/books/{id}/edit(id=${book.getId()})}">
+    <input type="submit" value="Редактировать">
+</form>
+
+<form th:method="PATCH" th:action="@{/books/{id}/genre(id=${book.getId()})}">
+    <label for="genrePicker">Выберите жанр</label>
+    <select th:object="${book}" th:field="*{genre}" id="genrePicker">
+        <option th:each="genre : ${genres}" th:value="${genre.getId()}" th:text="${genre.getName()}"></option>
+    </select>
+    <input type="submit" value="Изменить жанр">
+</form>
+
 <form th:action="@{/books/{id}/authors(id=${book.getId()})}">
     <input type="submit" value="Редактировать список авторов">
 </form>

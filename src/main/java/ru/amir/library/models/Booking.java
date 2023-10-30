@@ -1,6 +1,7 @@
 package ru.amir.library.models;
 
 import jakarta.persistence.*;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.util.Date;
 
@@ -31,6 +32,7 @@ public class Booking {
 
     @Transient
     private boolean isOverdue;
+
 
     public Booking() {
     }

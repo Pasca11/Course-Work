@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Создание жанра</title>
+</head>
+<body>
+<form method="POST" th:action="@{/genres}" th:object="${genre}">
+    <label for="name">Назвние</label>
+    <input type="text" th:field="*{name}" id="name">
+    <input type="submit" value="Добавить">
+</form>
+</body>
+</html>

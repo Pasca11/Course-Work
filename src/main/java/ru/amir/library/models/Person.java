@@ -3,6 +3,8 @@ package ru.amir.library.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.Cascade;
 import ru.amir.library.utils.Role;
 
 import java.util.List;
@@ -28,17 +30,18 @@ public class Person {
 
     @Column(name = "password")
     @NotEmpty
+    @Size(min = 2, message = "Пароль слишком короткий")
     private String password;
 
     @Column(name = "phone_number")
-    @Pattern(regexp = "[+][0-9]{11}", message = "Incorrect phone number")
+    @Pattern(regexp = "[+][7][0-9]{10}", message = "Incorrect phone number")
     private String phoneNumber;
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "person", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "person", cascade = CascadeType.REFRESH)
     private List<Booking> bookings;
 
     public Person() {

@@ -1,6 +1,8 @@
 package ru.amir.library.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
@@ -13,6 +15,7 @@ public class Genre {
     private int id;
 
     @Column(name = "name")
+    @NotEmpty(message = "Имя жанра не может быть пустым")
     private String name;
 
     @OneToMany(mappedBy = "genre")

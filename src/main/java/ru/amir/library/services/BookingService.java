@@ -8,7 +8,6 @@ import ru.amir.library.models.Booking;
 import ru.amir.library.models.Person;
 import ru.amir.library.repositories.BookingsRepository;
 import ru.amir.library.repositories.StatusRepository;
-import ru.amir.library.utils.NotEnoughBooksException;
 
 import java.util.Date;
 import java.util.List;
@@ -59,7 +58,7 @@ public class BookingService {
     }
 
     @Transactional
-    public void assign(Person person, Book book) throws NotEnoughBooksException {
+    public void assign(Person person, Book book) {
         Booking booking = new Booking();
         booking.setBook(book);
         booking.setPerson(person);

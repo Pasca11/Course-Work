@@ -20,7 +20,7 @@
     </div>
 </div>
 <hr>
-<p>Выданные книги</p>
+<p>Открытые заявки</p>
 <div th:if="${bookingsToClose}">
     <div th:each="i : ${bookingsToClose}">
         <form th:method="POST" th:action="@{/librarian/{id}/closeBooking(id=${person.getId()})}" th:object="${someBooking}">
@@ -31,6 +31,13 @@
         </form>
     </div>
 </div>
+
 <hr>
 </body>
+<form action="/books">
+    <input type="submit" value="Список книг"/>
+</form>
+<form action="/genres">
+    <input type="submit" value="Список жанров"/>
+</form>
 </html>

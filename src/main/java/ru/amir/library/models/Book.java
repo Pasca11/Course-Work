@@ -105,9 +105,11 @@ public class Book {
         if (authors.isEmpty()) {
             return "Неизвестен";
         }
-        String res = "";
+        StringBuilder res = new StringBuilder();
         for (Author author : authors) {
-            res += author.getFirstName() + " " +  author.getSecondName() + ", ";
+            res.append(author.getFirstName()).append(" ")
+                    .append(author.getPatronymic()).append(" ")
+                    .append(author.getSecondName()).append(", ");
         }
         return res.substring(0, res.length() - 2);
     }

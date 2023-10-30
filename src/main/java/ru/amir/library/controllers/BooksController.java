@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.amir.library.models.Author;
 import ru.amir.library.models.Book;
+import ru.amir.library.models.Genre;
 import ru.amir.library.services.AuthorsService;
 import ru.amir.library.services.BooksService;
 import ru.amir.library.services.GenresService;
@@ -47,7 +48,6 @@ public class BooksController {
     @PostMapping
     public String addBook(@ModelAttribute("book") @Valid Book book,
                           BindingResult bindingResult) {
-        System.out.println(book.getGenre().getName());
         if (bindingResult.hasErrors()) {
             return "book/new";
         }
@@ -61,6 +61,13 @@ public class BooksController {
         model.addAttribute("book", book);
         model.addAttribute("genres", genresService.findAll());
         return "book/bookPage";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String edit(@PathVariable("id") Book book,
+                       Model model) {
+        model.addAttribute("book", book);
+        return "book/edit";
     }
 
     @GetMapping("/{id}/authors")
@@ -84,5 +91,24 @@ public class BooksController {
                             @PathVariable("id") int id) {
         booksService.addAuthor(id, author);
         return "redirect:/books/" + id + "/authors";
+    }
+
+    @PatchMapping("/{id}")
+    public String edition(@PathVariable int id,
+                          @ModelAttribute Book book,
+                          BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "book/edit";
+        } else {
+            booksService.update(id, book);
+            return "redirect:/books/" + id;
+        }
+    }
+
+    @PatchMapping("/{id}/genre")
+    public String changeGenre(@PathVariable("id") int id,
+                              @ModelAttribute Book book) {
+        booksService.changeGenre(id, book);
+        return "redirect:/books/" + id;
     }
 }

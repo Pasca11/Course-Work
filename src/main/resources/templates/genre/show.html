@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Жанр</title>
+</head>
+<body>
+<form th:method="PATCH" th:action="@{/genres/{id}(id=${genre.getId()})}" th:object="${genre}">
+    <input type="text" th:value="${genre.getName()}" th:field="*{name}">
+    <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">error</div>
+    <input type="submit" value="Редактировать">
+</form>
+
+<div th:each="book : ${books}">
+  <p th:text="${book.getId()} + '. ' + ${book.getTitle()} + ' ' + ${book.getAuthorsInString()}"></p>
+</div>
+<form th:method="delete" th:action="@{/genres/{id}(id=${genre.getId()})}">
+    <input type="submit" value="Удалить">
+</form>
+</body>
+</html>
