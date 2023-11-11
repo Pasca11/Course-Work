@@ -1,6 +1,7 @@
 package ru.amir.library.controllers;
 
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,7 +20,7 @@ public class AuthorsController {
 
     @GetMapping
     public String mainPage(Model model) {
-        model.addAttribute("allAuthors", authorsService.findAll());
+        model.addAttribute("allAuthors", authorsService.findAll(Sort.by(Sort.Direction.ASC, "id")));
         return "authors/mainPage";
     }
 

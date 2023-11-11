@@ -20,6 +20,7 @@ public class SecurityConfig {
                                 .requestMatchers("/admin/*", "/admin").hasRole("ADMIN")
                                 .requestMatchers("/librarian").hasRole("MODERATOR")
                                 .requestMatchers("/auth/login", "/auth/registration", "/error").permitAll()
+                                .requestMatchers("/test").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .formLogin(login ->

@@ -2,27 +2,64 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <title>Новый автор</title>
 </head>
 <body>
-<form th:method="POST" th:action="@{/authors}" th:object="${author}">
-  <label for="tt">*Имя</label>
-  <input type="text" th:field="*{firstName}" id="tt">
-  <div style="color: red" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">error</div>
-  <br>
-  <label for="fn">Фамилия</label>
-  <input type="text" th:field="*{secondName}" id="fn">
-  <div style="color: red" th:if="${#fields.hasErrors('secondName')}" th:errors="*{secondName}">error</div>
-  <br>
-  <label for="am">Отчество</label>
-  <input type="text" th:field="*{patronymic}" id="am">
-  <div style="color: red" th:if="${#fields.hasErrors('patronymic')}" th:errors="*{patronymic}">error</div>
-  <br>
-  <label for="bd">Дата рождения</label>
-  <input type="date" th:field="*{birthday}" id="bd">
-  <div style="color: red" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}">error</div>
-  <br>
-  <input type="submit" value="Добавить">
-</form>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Библиотека.ru</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" href="/customer">Личный кабинет</a>
+        </li>
+        <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')">
+          <li class="nav-item">
+            <a class="nav-link active" href="/librarian">Библиотекарь</a>
+          </li>
+        </div>
+        <div sec:authorize="hasRole('ROLE_ADMIN')">
+          <li class="nav-item">
+            <a class="nav-link active" href="/admin">Администратор</a>
+          </li>
+        </div>
+      </ul>
+      <form th:action="@{/logout}" th:method="post">
+        <input type="submit" class="btn btn-outline-danger" value="Выйти">
+    </form>
+    </div>
+  </div>
+</nav>
+
+<a href="/authors" class="btn btn-danger mx-3 mt-3">Назад</a>
+
+<div class="container shadow m-3 col-5">
+  <p class="display-5 mx-3">Новый автор</p>
+  <hr>
+  <form th:method="POST" th:action="@{/authors}" th:object="${author}">
+    <label for="tt">*Имя</label>
+    <input type="text" th:field="*{firstName}" id="tt">
+    <div style="color: red" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">error</div>
+    <br>
+    <label for="fn">Фамилия</label>
+    <input type="text" th:field="*{secondName}" id="fn">
+    <div style="color: red" th:if="${#fields.hasErrors('secondName')}" th:errors="*{secondName}">error</div>
+    <br>
+    <label for="am">Отчество</label>
+    <input type="text" th:field="*{patronymic}" id="am">
+    <div style="color: red" th:if="${#fields.hasErrors('patronymic')}" th:errors="*{patronymic}">error</div>
+    <br>
+    <label for="bd">Дата рождения</label>
+    <input type="date" th:field="*{birthday}" id="bd">
+    <div style="color: red" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}">error</div>
+    <br>
+    <input type="submit" value="Добавить">
+  </form>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
 </html>

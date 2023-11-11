@@ -2,17 +2,18 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <title>Авторы</title>
 </head>
+<form th:action="@{/books/{id}(id=${book.getId()})}">
+    <input type="submit" value="Вернуться">
+</form>
 <body>
 <p>Текущие авторы:</p>
 <div th:each="author : ${bookAuthors}">
     <p th:text="${author.getFirstName() + ' ' + author.getSecondName()}"></p>
     <form th:method="DELETE" th:action="@{/books/{id}/authors(id=${book.getId()})}">
         <input type="hidden" th:value="${author.getId()}" name="id">
-<!--        <input type="hidden" th:value="${author.getFirstName()}" name="firstName">-->
-<!--        <input type="hidden" th:value="${author.getSecondName()}" name="secondName">-->
-<!--        <input type="hidden" th:value="${author.getBirthday()}" name="birthDay">-->
         <input type="submit" value="Удалить">
     </form>
 </div>
@@ -28,5 +29,7 @@
         <input type="submit" value="Добавить">
     </form>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
 </body>
 </html>

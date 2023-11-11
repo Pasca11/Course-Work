@@ -20,4 +20,9 @@ public class MainMenuController {
     public String accessDenied() {
         return "accessDenied";
     }
+
+    @GetMapping("/test")
+    public String test() {
+        return "util/test";
+    }
 }

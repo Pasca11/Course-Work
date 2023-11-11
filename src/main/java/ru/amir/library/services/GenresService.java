@@ -6,6 +6,7 @@ import ru.amir.library.models.Genre;
 import ru.amir.library.repositories.GenresRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GenresService {
@@ -26,9 +27,10 @@ public class GenresService {
     }
 
     @Transactional(readOnly = true)
-    public Genre findByName(String name) {
-        return genresRepository.findByName(name).get();
+    public Optional<Genre> findByName(String name) {
+        return genresRepository.findByName(name);
     }
+
 
     public void save(Genre genre) {
         genresRepository.save(genre);

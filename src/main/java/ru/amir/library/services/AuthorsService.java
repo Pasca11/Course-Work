@@ -1,5 +1,6 @@
 package ru.amir.library.services;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.amir.library.models.Author;
@@ -22,6 +23,11 @@ public class AuthorsService {
     @Transactional(readOnly = true)
     public List<Author> findAll() {
         return authorsRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Author> findAll(Sort sort) {
+        return authorsRepository.findAll(sort);
     }
 
     @Transactional(readOnly = true)
