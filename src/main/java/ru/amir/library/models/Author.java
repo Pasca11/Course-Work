@@ -48,7 +48,7 @@ public class Author {
     }
 
     public String getFirstName() {
-        return firstName;
+        return firstName == null ? "" : firstName;
     }
 
     public void setFirstName(String firstName) {
@@ -56,7 +56,7 @@ public class Author {
     }
 
     public String getSecondName() {
-        return secondName;
+        return secondName == null ? "" : secondName;
     }
 
     public void setSecondName(String secondName) {
@@ -80,7 +80,7 @@ public class Author {
     }
 
     public String getPatronymic() {
-        return patronymic;
+        return patronymic == null ? "" : patronymic;
     }
 
     public void setPatronymic(String patronymic) {

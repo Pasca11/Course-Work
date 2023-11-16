@@ -6,4 +6,5 @@ import ru.amir.library.models.Author;
 
 @Repository
 public interface AuthorsRepository extends JpaRepository<Author, Integer> {
+    void deleteById(int id);
 }

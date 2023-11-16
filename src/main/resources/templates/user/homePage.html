@@ -8,49 +8,121 @@
     <title>Home page</title>
 </head>
 <body>
-<p th:text="'Пользователь: ' + ${person.getFirstName()} + ' (' + ${person.getUsername()} + ')'"></p>
 
-<div th:if="${!books.isEmpty()}">
-    <p>Ваши книги:</p>
-    <div th:each="book : ${books}">
-        <p th:text="${book.getTitle()} + ', ' + ${book.getAuthorsInString()}"></p>
-    </div>
-</div>
-<hr>
-<p>Книги в наличии:</p>
-<div th:if="${allBooks}">
-    <div th:each="i : ${allBooks}">
-        <form th:method="POST" th:action="@{/customer/{id}/assign(id=${person.getId()})}">
-            <p th:text="${i.getTitle()} + ', ' + ${i.getAuthorsInString()}" style="display: inline"></p>
-            <input type="hidden" th:name="id" th:value="${i.getId()}">
-            <input type="submit" th:value="Забронировать">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">Библиотека.ru</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+            <a class="nav-link active" href="/customer">Личный кабинет</a>
+            </li>
+            <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')">
+            <li class="nav-item">
+                <a class="nav-link active" href="/librarian">Библиотекарь</a>
+            </li>
+            </div>
+            <div sec:authorize="hasRole('ROLE_ADMIN')">
+            <li class="nav-item">
+                <a class="nav-link active" href="/admin">Администратор</a>
+            </li>
+            </div>
+        </ul>
+        <form th:action="@{/logout}" th:method="post">
+            <input type="submit" class="btn btn-outline-danger" value="Выйти">
         </form>
+        </div>
     </div>
+</nav>
+<div class="container shadow">
+<div th:if="${#authentication.getName()}==${person.getUsername()} or ${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+    <form th:action="@{/customer/{id}/delete(id=${person.getId()})}">
+        <a th:href="@{/customer/{id}/edit(id=${person.getId()})}" class="btn btn-primary">Редактировать</a>
+        <input class="btn btn-danger" type="submit" value="Удалить аккаунт">
+        <div th:if="${delError}">
+            <p th:text="${delError}"></p>
+        </div>
+    </form>
 </div>
+
+<div class="display-6">Ваши книги</div>
+<table class="table table-stripped">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Название</th>
+            <th scope="col">Авторы</th>
+            <th scope="col">Дата выхода</th>
+            <th scope="col">Количество</th>
+        </tr>
+    </thead>
+    <tbody>
+        <div th:each="book : ${books}">
+            <tr>
+                <th scope="row" th:text="${book.getId()}"></th>
+                <td th:text="${book.getTitle()}"></td>
+                <td th:text="${book.getAuthorsInString()}"></td>
+                <td th:text="${#dates.format(book.getReleaseDate(), 'dd-MM-yyyy')}"></td>
+                <td th:text="${book.getAmount()}"></td>
+                <td>
+                    <form th:method="POST" th:action="@{/customer/{id}/assign(id=${person.getId()})}">
+
+                        <input type="hidden" th:name="id" th:value="${person.getId()}">
+                        <input class="btn btn-primary" type="submit" value="Забронировать">
+                    </form>
+                </td>
+            </tr>
+            
+        </div>
+    </tbody>
+</table>
+<hr>
+<div class="display-6">Доступные книги</div>
+<table class="table table-stripped">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Название</th>
+            <th scope="col">Авторы</th>
+            <th scope="col">Дата выхода</th>
+            <th scope="col">Количество</th>
+        </tr>
+    </thead>
+    <tbody>
+        <div th:each="book : ${allBooks}">
+            <tr>
+                <th scope="row" th:text="${book.getId()}"></th>
+                <td th:text="${book.getTitle()}"></td>
+                <td th:text="${book.getAuthorsInString()}"></td>
+                <td th:text="${#dates.format(book.getReleaseDate(), 'dd-MM-yyyy')}"></td>
+                <td th:text="${book.getAmount()}"></td>
+                <td>
+                    <form th:method="POST" th:action="@{/customer/{id}/assign(id=${person.getId()})}">
+
+                        <input type="hidden" th:name="id" th:value="${book.getId()}">
+                        <input class="btn btn-primary" type="submit" value="Забронировать">
+                    </form>
+                </td>
+            </tr>
+            
+        </div>
+    </tbody>
+</table>
+
 <div sec:authorize="hasRole('ROLE_ADMIN')">
     <form th:method="PATCH" th:action="@{/customer/{id}/changeRole(id=${person.getId()})}">
         <label for="rolePicker">Выберите роль</label>
         <select th:object="${person}" th:field="*{role}" id="rolePicker">
             <option th:each="role : ${roles}" th:value="${role}" th:text="${role}"></option>
         </select>
-        <input type="submit" value="Изменить роль">
+        <input class="btn btn-outline-primary" type="submit" value="Изменить роль">
     </form>
 </div>
 <hr>
-<div th:if="${#authentication.getName()}==${person.getUsername()} or ${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
-    <form th:method="GET" th:action="@{/customer/{id}/edit(id=${person.getId()})}">
-        <input type="submit" value="Редактировать">
-    </form>
-    <form th:action="@{/customer/{id}/delete(id=${person.getId()})}">
-        <input type="submit" value="Удалить аккаунт">
-        <div th:if="${delError}">
-            <p th:text="${delError}"></p>
-        </div>
-    </form>
 </div>
-<form th:action="@{/logout}" th:method="post">
-    <input type="submit" value="Выйти из аккаунта">
-</form>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
 </body>

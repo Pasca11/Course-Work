@@ -55,12 +55,19 @@ public class AuthorsController {
     }
 
     @PostMapping
-    public String save(@ModelAttribute Author author,
+    public String save(@ModelAttribute @Valid Author author,
                        BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "authors/new";
         }
         authorsService.save(author);
+        return "redirect:/authors";
+    }
+
+    @DeleteMapping
+    public String deleteAuthor(@ModelAttribute Author author) {
+        System.out.println(author.getId());
+        authorsService.delete(author);
         return "redirect:/authors";
     }
 }

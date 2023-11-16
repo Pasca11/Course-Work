@@ -29,7 +29,6 @@ public class Person {
     private String secondName;
 
     @Column(name = "password")
-    @NotEmpty
     @Size(min = 2, message = "Пароль слишком короткий")
     private String password;
 

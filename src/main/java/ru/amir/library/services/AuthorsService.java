@@ -51,4 +51,7 @@ public class AuthorsService {
     public void save(Author author) {
         authorsRepository.save(author);
     }
+
+    @Transactional
+    public void delete(Author author) {authorsRepository.deleteById(author.getId());}
 }

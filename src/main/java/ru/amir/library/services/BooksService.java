@@ -106,5 +106,11 @@ public class BooksService {
         Book book1 = booksRepository.findById(id).get();
         book1.setGenre(book.getGenre());
     }
+
+    public boolean gotOpenBookings(Book book) {
+        book = booksRepository.findById(book.getId()).get();
+        List<Booking> list = book.getBookings().stream().filter(o -> o.getStatus().getId() != 3).toList();
+        return !list.isEmpty();
+    }
 }
 

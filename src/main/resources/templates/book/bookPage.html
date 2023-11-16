@@ -7,26 +7,81 @@
     <title>Книга</title>
 </head>
 <body>
-<p th:text="${book.getTitle() + ' ' + book.getAuthorsInString() + '. ' + book.getGenre().getName()}">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">Библиотека.ru</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+            <a class="nav-link active" href="/customer">Личный кабинет</a>
+            </li>
+            <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')">
+            <li class="nav-item">
+                <a class="nav-link active" href="/librarian">Библиотекарь</a>
+            </li>
+            </div>
+            <div sec:authorize="hasRole('ROLE_ADMIN')">
+            <li class="nav-item">
+                <a class="nav-link active" href="/admin">Администратор</a>
+            </li>
+            </div>
+        </ul>
+        <form th:action="@{/logout}" th:method="post">
+            <input type="submit" class="btn btn-outline-danger" value="Выйти">
+        </form>
+        </div>
+    </div>
+</nav>
 
-</p>
+<a href="/books" class="btn btn-danger mx-3 mt-3">Назад</a>
 
-<form th:action="@{/books/{id}/edit(id=${book.getId()})}">
-    <input type="submit" value="Редактировать">
-</form>
+<div class="container shadow m-3 col-3">
+     <table class="table table-stripped">
+        <tbody>
+            <tr>
+                <th scope="row">ID</th>
+                <td th:text="${book.id}"></td>
+            </tr>
+            <tr>
+                <th scope="row">Название</th>
+                <td th:text="${book.getTitle}"></td>
+            </tr>
+            <tr>
+                <th scope="row">Авторы</th>
+                <td th:text="${book.getAuthorsInString}"></td>
+            </tr>
+            <tr>
+                <th scope="row">
+                    <a href="/genres">Жанр</a>
+                </th>
+                <td>
+                    <form th:method="PATCH" th:action="@{/books/{id}/genre(id=${book.getId()})}">
+                        <select th:object="${book}" th:field="*{genre}" id="genrePicker">
+                            <option th:each="genre : ${genres}" th:value="${genre.getId()}" th:text="${genre.getName()}"></option>
+                        </select>
+                        <input class="btn btn-sm btn-outline-primary" type="submit" value="Изменить жанр">
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Дата выхода</th>
+                <td th:text="${#dates.format(book.getReleaseDate, 'dd-MM-yyyy')}"></td>
+            </tr>
+        </tbody>
+     </table>
+     
+     <form th:action="@{/books/{id}/edit(id=${book.getId()})}">
+        <input class="btn btn-primary my-3" type="submit" value="Редактировать">
+    </form>
+    
+    <form th:action="@{/books/{id}/authors(id=${book.getId()})}">
+        <input class="btn btn-primary mb-3" type="submit" value="Редактировать список авторов">
+    </form>
+</div>
 
-<form th:method="PATCH" th:action="@{/books/{id}/genre(id=${book.getId()})}">
-    <label for="genrePicker">Выберите </label>
-    <a href="/genres">жанр</a>
-    <select th:object="${book}" th:field="*{genre}" id="genrePicker">
-        <option th:each="genre : ${genres}" th:value="${genre.getId()}" th:text="${genre.getName()}"></option>
-    </select>
-    <input type="submit" value="Изменить жанр">
-</form>
-
-<form th:action="@{/books/{id}/authors(id=${book.getId()})}">
-    <input type="submit" value="Редактировать список авторов">
-</form>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
 </body>

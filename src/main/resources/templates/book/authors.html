@@ -5,30 +5,102 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <title>Авторы</title>
 </head>
-<form th:action="@{/books/{id}(id=${book.getId()})}">
-    <input type="submit" value="Вернуться">
-</form>
 <body>
-<p>Текущие авторы:</p>
-<div th:each="author : ${bookAuthors}">
-    <p th:text="${author.getFirstName() + ' ' + author.getSecondName()}"></p>
-    <form th:method="DELETE" th:action="@{/books/{id}/authors(id=${book.getId()})}">
-        <input type="hidden" th:value="${author.getId()}" name="id">
-        <input type="submit" value="Удалить">
-    </form>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">Библиотека.ru</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+            <a class="nav-link active" href="/customer">Личный кабинет</a>
+            </li>
+            <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')">
+            <li class="nav-item">
+                <a class="nav-link active" href="/librarian">Библиотекарь</a>
+            </li>
+            </div>
+            <div sec:authorize="hasRole('ROLE_ADMIN')">
+            <li class="nav-item">
+                <a class="nav-link active" href="/admin">Администратор</a>
+            </li>
+            </div>
+        </ul>
+        <form th:action="@{/logout}" th:method="post">
+            <input type="submit" class="btn btn-outline-danger" value="Выйти">
+        </form>
+        </div>
+    </div>
+</nav>
+
+<a th:href="@{/books/{id}(id=${book.getId()})}" class="btn btn-danger mx-3 mt-3">Назад</a>
+<div class="row">
+    <div class="col">
+        <p class="display-6">Текущие авторы:</p>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Фамилия</th>
+                    <th scope="col">Имя</th>
+                    <th scope="col">Отчество</th>
+                    <th scope="col">Дата рождения</th>
+                </tr>
+            </thead>
+            <tbody>
+                <div th:each="i : ${bookAuthors}">
+                    <tr>
+                        <th scope="row" th:text="${i.getId()}"></td>
+                        <td th:text="${i.getSecondName}"></td>
+                        <td th:text="${i.getFirstName}"></td>
+                        <td th:text="${i.getPatronymic}"></td>
+                        <td th:text="${#dates.format(i.getBirthday(), 'dd-MM-yyyy')}"></td>
+                        <td>
+                            <form th:method="DELETE" th:action="@{/books/{id}/authors(id=${book.getId()})}">
+                                <input type="hidden" th:value="${i.getId()}" name="id">
+                                <input class="btn btn-danger" type="submit" value="Удалить">
+                            </form>
+                        </td>
+                    </th>
+                </div>
+            </tbody>
+        </table>
+    </div>
+    <div class="col">
+        <p class="display-6">Все авторы:</p>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Фамилия</th>
+                    <th scope="col">Имя</th>
+                    <th scope="col">Отчество</th>
+                    <th scope="col">Дата рождения</th>
+                </tr>
+            </thead>
+            <tbody>
+                <div th:each="i : ${allAuthors}">
+                    <tr>
+                        <th scope="row" th:text="${i.getId()}"></td>
+                        <td th:text="${i.getSecondName}"></td>
+                        <td th:text="${i.getFirstName}"></td>
+                        <td th:text="${i.getPatronymic}"></td>
+                        <td th:text="${#dates.format(i.getBirthday(), 'dd-MM-yyyy')}"></td>
+                        <td>
+                            <form th:method="PATCH" th:action="@{/books/{id}/authors(id=${book.getId()})}">
+                                <input type="hidden" th:value="${i.getId()}" name="id">
+                                <input class="btn btn-success" type="submit" value="Добавить">
+                            </form>
+                        </td>
+                    </th>
+                </div>
+            </tbody>
+        </table>
+    </div>
 </div>
-<hr>
-<p>Все авторы</p>
-<div th:each="author : ${allAuthors}">
-    <p th:text="${author.getFirstName() + ' ' + author.getSecondName()}"></p>
-    <form th:method="PATCH" th:action="@{/books/{id}/authors(id=${book.getId()})}">
-        <input type="hidden" th:value="${author.getId()}" name="id">
-        <!--        <input type="hidden" th:value="${author.getFirstName()}" name="firstName">-->
-        <!--        <input type="hidden" th:value="${author.getSecondName()}" name="secondName">-->
-        <!--        <input type="hidden" th:value="${author.getBirthday()}" name="birthDay">-->
-        <input type="submit" value="Добавить">
-    </form>
-</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
 </body>

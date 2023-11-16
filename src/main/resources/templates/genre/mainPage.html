@@ -7,16 +7,57 @@
     <title>Жанры</title>
 </head>
 <body>
-<table th:each="genre: ${genres}">
-  <tr>
-    <td>
-      <a th:href="@{/genres/{id}(id = ${genre.getId()})}" th:text="${genre.getName()}"></a>
-    </td>
-  </tr>
-</table>
-<form action="/genres/new">
-    <input type="submit" value="Добавить новый жанр">
-</form>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+      <a class="navbar-brand" href="/">Библиотека.ru</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+          <a class="nav-link active" href="/customer">Личный кабинет</a>
+          </li>
+          <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')">
+          <li class="nav-item">
+              <a class="nav-link active" href="/librarian">Библиотекарь</a>
+          </li>
+          </div>
+          <div sec:authorize="hasRole('ROLE_ADMIN')">
+          <li class="nav-item">
+              <a class="nav-link active" href="/admin">Администратор</a>
+          </li>
+          </div>
+      </ul>
+      <form th:action="@{/logout}" th:method="post">
+          <input type="submit" class="btn btn-outline-danger" value="Выйти">
+      </form>
+      </div>
+  </div>
+</nav>
+<div class="container m-3 shadow col-3">
+  <div class="display-6">Список жанров</div>
+  <hr>
+  <table class="table table-stripped">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Название</th>
+      </tr>
+    </thead>
+    <tbody>
+      <div th:each="genre : ${genres}">
+        <tr>
+          <th scope="row" th:text="${genre.getId()}"></th>
+          <td>
+            <a th:href="@{/genres/{id}(id=${genre.getId()})}" th:text="${genre.getName()}"></a>
+          </td>
+        </tr>
+      </div>
+    </tbody>
+  </table>
+  <div class="btn btn-success btn-block w-100">Добавить</div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
 </body>

@@ -111,4 +111,18 @@ public class BooksController {
         booksService.changeGenre(id, book);
         return "redirect:/books/" + id;
     }
+
+    @DeleteMapping
+    public String deleteBook(@ModelAttribute Book book,
+                             Model model) {
+        System.out.println("HeRE");
+        if (!booksService.gotOpenBookings(book)) {
+            booksService.delete(book.getId());
+            return "redirect:/books";
+        } else {
+            model.addAttribute("book", booksService.findById(book.getId()).get());
+            model.addAttribute("bookingError", "Сначало необходимо закрыть все заявки с этой книгой");
+            return "/book/edit";
+        }
+    }
 }

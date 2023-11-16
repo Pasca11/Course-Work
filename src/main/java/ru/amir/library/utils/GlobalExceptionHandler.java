@@ -9,6 +9,6 @@ import java.util.NoSuchElementException;
 public class GlobalExceptionHandler {
     @ExceptionHandler
     public String noUserError(NoSuchElementException e) {
-        return "util/error";
+        return "util/noUser";
     }
 }

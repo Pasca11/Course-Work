@@ -7,26 +7,86 @@
     <title>Admin page</title>
 </head>
 <body>
-<form method="get" action="/admin">
-  <label for="input">Введите имя человека для поиска</label>
-  <input type="text" name="pattern" id="input">
-  <input type="submit" value="Поиск">
-</form>
-<div th:if="${hasPattern}">
-  <div th:if="${people.isEmpty()}">
-    <span>Пользователи не найдены</span>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">Библиотека.ru</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" href="/customer">Личный кабинет</a>
+        </li>
+        <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')">
+          <li class="nav-item">
+            <a class="nav-link active" href="/librarian">Библиотекарь</a>
+          </li>
+        </div>
+        <div sec:authorize="hasRole('ROLE_ADMIN')">
+          <li class="nav-item">
+            <a class="nav-link active" href="/admin">Администратор</a>
+          </li>
+        </div>
+      </ul>
+      <form th:action="@{/logout}" th:method="post">
+        <input type="submit" class="btn btn-outline-danger" value="Выйти">
+    </form>
+    </div>
   </div>
-  <div th:unless="${people.isEmpty()}">
-    <table th:each="person : ${people}">
-      <tr>
-        <td>
-          <a th:href="@{/customer/{id}(id = ${person.getId()})}" th:text="${person.getFirstName() +
-          ' ' + person.getSecondName() + ', ' + person.getUsername()}"></a>
-        </td>
-      </tr>
-    </table>
-  </div>
+</nav>
+<div class="align-items-center m-5">
+  <div class="container rounded p-3 justify-content-center shadow col-3">
+      <form method="get" action="/admin">
+        <label class="form-label" for="input">Введите имя человека для поиска</label>
+        <input class="form-control" type="text" name="pattern" id="input">
+        <input class="btn btn-primary mt-3" type="submit" value="Поиск">
+      </form>
 </div>
+</div>
+      <div th:if="${hasPattern}">
+        <div th:if="${people.isEmpty()}">
+          <span class="fw-bold" style="color: red;">Пользователи не найдены</span>
+        </div>
+        <div th:unless="${people.isEmpty()}">
+          <table class="table table-stripped">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Логин</th>
+                    <th scope="col">Имя</th>
+                    <th scope="col">Фамилия</th>
+                    <th scope="col">Номер телефона</th>
+                    <th scope="col">Роль</th>
+                </tr>
+            </thead>
+            <tbody>
+                <div th:each="person : ${people}">
+                    <tr>
+                        <th scope="row" th:text="${person.getId()}"></th>
+                        <td th:text="${person.getUsername()}"></td>
+                        <td th:text="${person.getFirstName()}"></td>
+                        <td th:text="${person.getSecondName()}"></td>
+                        <td th:text="${person.getPhoneNumber()}"></td>
+                        <td th:text="${person.getRole()}"></td>
+                        <td>
+                            <a class="btn btn-primary" th:href="@{/customer/{id}(id=${person.getId()})}">Открыть</a>
+                        </td>
+                    </tr>
+                    
+                </div>
+            </tbody>
+        </table>
+          <table th:each="person : ${people}">
+            <tr>
+              <td>
+                <a th:href="@{/customer/{id}(id = ${person.getId()})}" th:text="${person.getFirstName() +
+                ' ' + person.getSecondName() + ', ' + person.getUsername()}"></a>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
 </html>

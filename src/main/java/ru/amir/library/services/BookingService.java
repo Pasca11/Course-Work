@@ -42,6 +42,7 @@ public class BookingService {
     @Transactional
     public void issue(int id) {
         Booking booking = bookingsRepository.findById(id).get();
+        booking.getBook().decreaseAmount();
         booking.setIssueDate(new Date());
         bookingsRepository.findById(id).get().setStatus(statusRepository.findById(2).get());
     }
@@ -50,8 +51,9 @@ public class BookingService {
     public void close(int id) {
         Booking booking = bookingsRepository.findById(id).get();
         booking.setStatus(statusRepository.findById(3).get());
-
-        booking.getBook().increaseAmount();
+        if (booking.getStatus().getName().equals("ISSUED")) {
+            booking.getBook().increaseAmount();
+        }
 
         bookingsRepository.save(booking);
 
