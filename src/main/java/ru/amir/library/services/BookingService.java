@@ -28,7 +28,7 @@ public class BookingService {
     @Transactional(readOnly = true)
     public List<Booking> getAllNotIssued() {
         return bookingsRepository.findAll().stream().filter(
-                o -> o.getStatus().getId() == 1
+                o -> o.getStatus().getId() == 1 && o.getBook().getAmount() > 0
         ).collect(Collectors.toList());
     }
 
@@ -50,10 +50,10 @@ public class BookingService {
     @Transactional
     public void close(int id) {
         Booking booking = bookingsRepository.findById(id).get();
-        booking.setStatus(statusRepository.findById(3).get());
         if (booking.getStatus().getName().equals("ISSUED")) {
             booking.getBook().increaseAmount();
         }
+        booking.setStatus(statusRepository.findById(3).get());
 
         bookingsRepository.save(booking);
 
@@ -67,7 +67,7 @@ public class BookingService {
         booking.setBookinDate(new Date());
         booking.setStatus(statusRepository.findById(1).get());
 
-        booksService.decreaseAmountById(book.getId());
+//        booksService.decreaseAmountById(book.getId());
 
         bookingsRepository.save(booking);
     }

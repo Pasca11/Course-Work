@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface PeopleRepository extends JpaRepository<Person, Integer> {
     Optional<Person> findByUsername(String username);
 
-    @Query("select p from Person p where p.firstName like %:pattern% or p.secondName like %:pattern%")
+    @Query("select p from Person p where p.firstName like %:pattern% or p.secondName like %:pattern% or p.username like %:pattern%")
     List<Person> findAllByNameLike(@Param("pattern") String pattern);
 
 }

@@ -29,11 +29,11 @@ public class Person {
     private String secondName;
 
     @Column(name = "password")
-    @Size(min = 2, message = "Пароль слишком короткий")
+    @Size(min = 5, message = "Пароль слишком короткий")
     private String password;
 
     @Column(name = "phone_number")
-    @Pattern(regexp = "[+][7][0-9]{10}", message = "Incorrect phone number")
+    @Pattern(regexp = "[+][7][0-9]{10}", message = "Неверный формат номера")
     private String phoneNumber;
 
     @Column(name = "role")

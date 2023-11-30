@@ -35,7 +35,7 @@
       <input type="password" class="form-control" th:field="*{password}" id="password"/>
       <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
     </div>
-    <input type="submit" class="btn btn-success w-100" value="Sign up!"/>
+    <input type="submit" class="btn btn-success w-100" value="Регистрация!"/>
     <hr>
     <a href="/auth/login" class="btn btn-primary btn-block w-100">Логин</a>
   </form>

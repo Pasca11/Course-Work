@@ -67,13 +67,13 @@
                 <td th:text="${book.getAuthorsInString()}"></td>
                 <td th:text="${#dates.format(book.getReleaseDate(), 'dd-MM-yyyy')}"></td>
                 <td th:text="${book.getAmount()}"></td>
-                <td>
-                    <form th:method="POST" th:action="@{/customer/{id}/assign(id=${person.getId()})}">
+<!--                <td>-->
+<!--                    <form th:method="POST" th:action="@{/customer/{id}/assign(id=${person.getId()})}">-->
 
-                        <input type="hidden" th:name="id" th:value="${person.getId()}">
-                        <input class="btn btn-primary" type="submit" value="Забронировать">
-                    </form>
-                </td>
+<!--                        <input type="hidden" th:name="id" th:value="${person.getId()}">-->
+<!--                        <input class="btn btn-primary" type="submit" value="Забронировать">-->
+<!--                    </form>-->
+<!--                </td>-->
             </tr>
             
         </div>
